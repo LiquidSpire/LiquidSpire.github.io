@@ -16,6 +16,7 @@
 
 html {
     scroll-behavior: smooth;
+    overflow-x: hidden;
 }
 
 * { 
@@ -30,6 +31,7 @@ body {
     font-family: 'Lora', serif;
     overflow-x: hidden;
     border: 12px solid var(--espresso);
+    max-width: 100%;
 }
 
 h1, h2, h3, h4 {
@@ -922,11 +924,11 @@ footer {
         background: var(--cream);
         color: var(--espresso);
         border: 2px solid var(--espresso);
-        padding: 0.5rem; 
+        padding: 0.5rem 0.25rem;
         text-align: center;
         font-weight: bold;
         box-shadow: 4px 4px 0 var(--sienna);
-        font-size: 0.85rem; 
+        font-size: 0.75rem;
         display: flex;
         align-items: center;
         justify-content: center;
