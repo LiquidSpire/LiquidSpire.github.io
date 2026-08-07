@@ -65,19 +65,19 @@
 
         <div class="stats-grid">
             <div class="stat-item">
-                <h3><span id="count-years" data-count="11">11</span>+</h3>
+                <h3><span id="count-years">11</span>+</h3>
                 <p class="label">Years Experience</p>
             </div>
             <div class="stat-item">
-                <h3><span id="count-events" data-count="525">525</span>+</h3>
+                <h3><span id="count-events">525</span>+</h3>
                 <p class="label">Events Directed</p>
             </div>
             <div class="stat-item">
-                <h3><span id="count-programs" data-count="20">20</span>+</h3>
+                <h3><span id="count-programs">20</span>+</h3>
                 <p class="label">Programs Launched</p>
             </div>
             <div class="stat-item">
-                <h3>$<span id="count-budget" data-count="10">10</span>m</h3>
+                <h3>$<span id="count-budget">10</span>m</h3>
                 <p class="label">Annual Budget</p>
             </div>
         </div>
@@ -119,13 +119,11 @@
                 <div class="impact-metrics-scorecard">
                     <div class="scorecard-readout">
                         <span class="metric-label">Members</span>
-                        <span class="metric-number">
-                        <span id="count-members" data-count="10400">10,400</span></span>
+                        <span class="metric-number"><span id="count-members">10,400</span></span>
                     </div>
                     <div class="scorecard-readout">
                         <span class="metric-label">Events</span>
-                        <span class="metric-number">
-                        <span id="count-events-board" data-count="525">525</span>+</span>
+                        <span class="metric-number"><span id="count-events-board">525</span>+</span>
                     </div>
                 </div>
             </div>
@@ -137,7 +135,7 @@
             <div class="impact-info">
                 <h3>District 6 Council</h3>
                 <p class="label">Board Chair</p>
-                <div class="impact-divider"></div>
+                <div class="impact-divider"></div>  
                 <p class="impact-copy">
                     Elected Chair of the Board for a nonprofit serving one of Saint Paul's most diverse districts. Directed more than $2M in grant funding while working with community leaders, businesses, and public partners to advance neighborhood priorities.
                 </p>
@@ -145,13 +143,11 @@
                 <div class="impact-metrics-scorecard">
                     <div class="scorecard-readout">
                         <span class="metric-label">Grant Funding</span>
-                        <span class="metric-number">
-                        $<span id="count-funding" data-count="2">2</span>M+</span>
+                        <span class="metric-number">$<span id="count-funding">2</span>M+</span>
                     </div>
                     <div class="scorecard-readout">
                         <span class="metric-label">Residents</span>
-                        <span class="metric-number">
-                        <span id="count-residents" data-count="23671">23,671</span></span>
+                        <span class="metric-number"><span id="count-residents">23,671</span></span>
                     </div>
                 </div>
             </div>
@@ -503,7 +499,7 @@
 </footer>
 
 <script type="module">
-    import { CountUp } from 'https://cdn.jsdelivr.net/npm/countup.js@2.8.0/dist/countUp.min.js';
+    import { CountUp } from './countUp.min.js';
 
     const options = { duration: 3, separator: ',' };
     
