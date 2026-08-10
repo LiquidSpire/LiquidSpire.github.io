@@ -72,6 +72,33 @@ document.addEventListener('DOMContentLoaded', () => {
 
 });
 
+    // --- Privacy Policy Modal Logic ---
+
+    const privacyTrigger = document.getElementById('privacy-trigger');
+    const privacyModal = document.getElementById('privacy-modal');
+    const modalClose = document.querySelector('.modal-close');
+
+    if (privacyTrigger && privacyModal && modalClose) {
+        
+        privacyTrigger.addEventListener('click', (e) => {
+            e.preventDefault(); // Stops the page from jumping to the top
+            privacyModal.classList.add('active');
+            document.body.style.overflow = 'hidden'; // Prevents background scrolling
+        });
+
+        modalClose.addEventListener('click', () => {
+            privacyModal.classList.remove('active');
+            document.body.style.overflow = 'auto'; // Restores background scrolling
+        });
+
+        privacyModal.addEventListener('click', (e) => {
+            if (e.target === privacyModal) {
+                privacyModal.classList.remove('active');
+                document.body.style.overflow = 'auto';
+            }
+        });
+    }
+
     // --- ACCORDION LOGIC ---
     const accordionHeaders = document.querySelectorAll('.accordion-header');
     
