@@ -1,549 +1,1196 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vito Sauro</title>
+/* ==================================
+   1. VARIABLES & BASE SETUP
+================================== */
 
-    <link rel="icon" href="favicons.svg" type="image/svg+xml">
-
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Abril+Fatface&family=Lora:ital,wght@0,400;0,700;1,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+:root {
+    --sienna: #C84B11;       
+    --gold: #E8A838;         
+    --avocado: #5A7A42;      
+    --cream: #F2DDB4;        
+    --espresso: #2C1810;     
     
-    <link rel="stylesheet" href="styles.css">
-    <!-- Google tag (gtag.js) -->
-        <script async src="https://www.googletagmanager.com/gtag/js?id=G-L2T179JHRN"></script>
-        <script>
-          window.dataLayer = window.dataLayer || [];
-          function gtag(){dataLayer.push(arguments);}
-          gtag('js', new Date());
-            
-          gtag('config', 'G-L2T179JHRN');
-        </script>
-</head>
-<body>
+    --border-heavy: 3px solid var(--espresso);
+    --transition-smooth: 0.3s ease-in-out;
+    --retro-tan: rgba(232, 168, 56, 0.2);
+}
 
-<div id="cursor-dot" class="cursor-dot"></div>
-<div id="cursor-outline" class="cursor-outline"></div>
+html {
+    scroll-behavior: smooth;
+    overflow-x: hidden;
+}
 
-<header id="mainNav" class="label">
-    <nav>
-        <a href="#about" class="interactive-el">ABOUT</a>
-        <a href="#community" class="interactive-el">COMMUNITY</a>
-        <a href="#experience" class="interactive-el">EXPERIENCE</a>
-        <a href="#education" class="interactive-el">EDUCATION</a>
-    </nav>
-</header>
+* { 
+    margin: 0; 
+    padding: 0; 
+    box-sizing: border-box;  
+}
 
-<section id="about">
-    <div class="hero-sun"></div>
-    <div class="hero-grain"></div>
+body {
+    background: var(--cream);
+    color: var(--espresso);
+    font-family: 'Lora', serif;
+    overflow-x: hidden;
+    border: 12px solid var(--espresso);
+    max-width: 100%;
+}
+
+h1, h2, h3, h4 {
+    font-family: 'Abril Fatface', serif;
+    font-style: normal;
+    font-weight: 400;
+}
+
+section { 
+    position: relative; 
+    padding: 5rem 10%;
+    scroll-margin-top: 50px; 
+}
+
+/* ==================================
+   2. TYPOGRAPHY & UNIVERSAL CLASSES
+================================== */
+
+.section-header {
+    max-width: 900px;
+    margin-bottom: 4rem;
+    max-width: 100%;
+}
+
+.section-header .label {
+    display: block;
+    margin-bottom: 1rem;
+    color: var(--sienna);
+}
+
+.section-header h2 {
+    font-size: clamp(2.75rem, 6vw, 4.5rem);
+    line-height: 1.05;
+    color: var(--espresso);
+    max-width: 800px;
+}
+
+#community .section-header h2,
+#experience .section-header h2,
+#skills .section-header h2,
+#education .section-header h2 {
+    font-size: clamp(2.5rem, 5vw, 4rem) !important;
+    margin-bottom: 2rem !important;
+}
+
+#community .section-header .label,
+#experience .section-header .label,
+#skills .section-header .label,
+#education .section-header .label {
+    font-size: 0.85rem !important; 
+    margin-bottom: 1rem !important;
+}
+
+.label {
+    font-family: 'DM Mono', monospace;
+    text-transform: uppercase;
+    letter-spacing: .1em;
+    font-size: .85rem;
+    font-style: normal;
+}
+
+/* Scroll Reveal Base State */
+.reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+}
+
+.reveal.active {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* ==================================
+   3. CUSTOM CURSOR & UI ELEMENTS
+================================== */
+
+.cursor-dot {
+    width: 12px; height: 12px; background-color: var(--sienna);
+    border-radius: 50%; position: fixed; top: 0; left: 0;
+    transform: translate(-50%, -50%); pointer-events: none;
+    z-index: 9999; transition: background-color 0.3s;
+}
+
+.cursor-outline {
+    width: 30px; height: 30px; border: 2px solid var(--espresso);
+    border-radius: 50%; position: fixed; top: 0; left: 0;
+    transform: translate(-50%, -50%); pointer-events: none;
+    z-index: 9998; transition: transform 0.15s ease-out, border-color 0.3s;
+}
+
+/* ==================================
+   4. HEADER & NAVIGATION
+================================== */
+
+header {
+    position: fixed; 
+    top: 0; 
+    width: 100%; 
+    padding: 1rem 4rem; 
+    display: flex; 
+    justify-content: space-between; 
+    z-index: 100;
+    color: var(--cream);
+    background-color: var(--espresso);
+    border-bottom: 2px solid var(--gold); 
+    pointer-events: auto;
+}
+
+header nav { display: flex; gap: 2rem; pointer-events: auto; }
+header nav a { color: inherit; text-decoration: none; transition: color 0.3s; }
+header nav a:hover { color: var(--gold); }
+
+/* ==================================
+   5. HERO EFFECTS & MARQUEE
+================================== */
+
+/* ---------- Sun ---------- */
+.hero-sun {
+    position: absolute;
+    width: 1000px;
+    height: 1000px;
+    border-radius: 50%;
+    top: -850px; 
+    left: 50%;
+    pointer-events: none;
+    background:
+        repeating-linear-gradient(
+            180deg,
+            rgba(255,255,255,.12) 0px,
+            rgba(255,255,255,.12) 2px,
+            transparent 2px,
+            transparent 26px
+        ),
+        #C96A2B;
+    box-shadow: 0 0 120px rgba(201,106,43,.25);
     
-    <div class="hero-content reveal">
-        <div class="about-grid-wrapper">
-            <div class="about-image-column">
-                <div class="analog-frame interactive-el">
-                    <div class="analog-matte">
-                        <img src="vito.png" alt="Vito Sauro portrait" />
-                    </div>
-                </div>
-            </div>
+    animation: 
+        sunDrop 2s cubic-bezier(0.2, 0.8, 0.2, 1) forwards,
+        sunDescent 60s linear 2s forwards;
+}
 
-            <div class="about-text-column">
-                <div class="section-header"><br>
-                    <p class="label">ABOUT</p>
-                    <h2>Vito Sauro</h2>
-                </div>
-                <p class="intro-text">
-                    Program and civic leader with 10+ years of experience across education, nonprofit, and public engagement settings. I lead community-facing programs that connect institutions with the people they serve, combining program development, communications, and operations.
-                    <br><br>
-                    My work focuses on building trust, coordinating cross-sector partnerships, and translating institutional goals into clear, sustainable public programs.
-                </p>
-            </div>
-        </div>
+@keyframes sunDrop {
+    0% {
+        transform: translateX(-50%) translateY(-300px);
+    }
+    100% {
+        transform: translateX(-50%) translateY(0);
+    }
+}
 
-        <div class="stats-grid">
-            <div class="stat-item">
-                <h3><span id="count-years">11</span>+</h3>
-                <p class="label">Years Experience</p>
-            </div>
-            <div class="stat-item">
-                <h3><span id="count-events">525</span>+</h3>
-                <p class="label">Events Directed</p>
-            </div>
-            <div class="stat-item">
-                <h3><span id="count-programs">20</span>+</h3>
-                <p class="label">Programs Launched</p>
-            </div>
-            <div class="stat-item">
-                <h3>$<span id="count-budget">10</span>m</h3>
-                <p class="label">Annual Budget</p>
-            </div>
-        </div>
+@keyframes sunDescent {
+    0% {
+        transform: translateX(-50%) translateY(0);
+    }
+    100% {
+        transform: translateX(-50%) translateY(150px);
+    }
+}
 
-        <p class="hero-subtitle label">
-            Education & Communications Leader
-        </p>
+/* ---------- Paper Grain ---------- */
 
-        <p class="hero-location">
-            ✦ North Saint Paul, Minnesota ✦
-        </p>
-    </div>
-</section>
+.hero-grain{
+    position:absolute;
+    inset:0;
+    pointer-events:none;
+    opacity:.045;
+    mix-blend-mode:soft-light;
 
-<div class="marquee-wrapper">
-    <div class="marquee label">
-        OPERATIONS ✦ COMMUNITY BUILDING ✦ PROGRAM DIRECTION ✦ PUBLIC ENGAGEMENT ✦ EDUCATION ✦ EVENT PRODUCTION ✦ PROJECT MANAGEMENT ✦
-        OPERATIONS ✦ COMMUNITY BUILDING ✦ PROGRAM DIRECTION ✦ PUBLIC ENGAGEMENT ✦ EDUCATION ✦ EVENT PRODUCTION ✦ PROJECT MANAGEMENT ✦
-    </div>
-</div>
+    background-image:
+        radial-gradient(circle at 25% 35%, rgba(255,255,255,.45) .7px, transparent .8px),
+        radial-gradient(circle at 80% 70%, rgba(255,255,255,.25) .6px, transparent .7px),
+        radial-gradient(circle at 60% 10%, rgba(0,0,0,.25) .7px, transparent .8px);
 
-<section id="community" class="reveal">
-    <div class="section-header">
-        <p class="label">COMMUNITY LEADERSHIP</p>
-        <h2>What I Enjoy</h2>
-    </div>
-   
-    <div class="impact-card interactive-el">
-        <div class="impact-accent green"></div>
-        <div class="impact-main">
-            <div class="impact-info">
-                <h3><a href="https://saintpaulboardgamegroup.com" target="_blank" rel="noopener noreferrer" style="text-decoration: none; color: inherit;">St Paul Board Game Group</a></h3>
-                <p class="label">Founder & Organizer</p>
-                <div class="impact-divider"></div>
-                <p class="impact-copy">
-                    Founded and run a community organization that has hosted 500+ events across dozens of venues, building a network of 10,000+ members through consistent programming and local partnerships.
-                </p>
-            </div>
-                <div class="impact-metrics-scorecard">
-                    <div class="scorecard-readout">
-                        <span class="metric-label">Members</span>
-                        <span class="metric-number"><span id="count-members">10,400</span></span>
-                    </div>
-                    <div class="scorecard-readout">
-                        <span class="metric-label">Events</span>
-                        <span class="metric-number"><span id="count-events-board">525</span>+</span>
-                    </div>
-                </div>
-            </div>
-        </div>
+    background-size:
+        220px 220px,
+        260px 260px,
+        180px 180px;
+    animation:grainShift .35s steps(3) infinite;
+}
 
-    <div class="impact-card interactive-el">
-        <div class="impact-accent orange"></div>
-        <div class="impact-main">
-            <div class="impact-info">
-                <h3>District 6 Council</h3>
-                <p class="label">Board Chair</p>
-                <div class="impact-divider"></div>  
-                <p class="impact-copy">
-                    Elected Chair of the Board for a nonprofit serving one of Saint Paul's most diverse districts. Directed more than $2M in grant funding while working with community leaders, businesses, and public partners to advance neighborhood priorities.
-                </p>
-            </div>
-                <div class="impact-metrics-scorecard">
-                    <div class="scorecard-readout">
-                        <span class="metric-label">Grant Funding</span>
-                        <span class="metric-number">$<span id="count-funding">2</span>M+</span>
-                    </div>
-                    <div class="scorecard-readout">
-                        <span class="metric-label">Residents</span>
-                        <span class="metric-number"><span id="count-residents">23,671</span></span>
-                    </div>
-                </div>
-            </div>
-        </div>    
-    </div>
-</section>
+@keyframes grainShift{
+    0%{transform:translate(0,0);}
+    25%{transform:translate(-1px,1px);}
+    50%{transform:translate(1px,-1px);}
+    75%{transform:translate(-1px,-1px);}
+    100%{transform:translate(0,0);}
+}
 
-<section id="experience" class="reveal">
-    <div class="section-header">
-        <p class="label">EXPERIENCE</p>
-        <h2>What I've Done.</h2>
-    </div>
-    <div class="accordion-wrapper">
-        
-        <div class="accordion-item interactive-el">
-            <div class="accordion-header">
-                <h3 class="acc-title">Marketing Manager</h3>
-                <span class="acc-company">Airo Marketing</span>
-                <span class="acc-year">2023 — Present</span>
-            </div>
-            <div class="accordion-content">
-                <ul class="bullet-list">
-                    <li>Oversee a <b>$10M annual budget</b>, allocating spend across dozens of unique channels and partnerships.</li>
-                    <li>Manage projects with outside partners, including freelance writers, designers, and marketing managers.</li>
-                    <li>Build out marketing and comms strategies that focus on clear messaging and genuine engagement.</li>
-                    <li>Direct the creation of public-facing content, from blog posts and landing pages to email sequences and ad copy.</li>
-                    <li>Coordinate the build-out of reporting systems and data structures to evaluate various internal records.</li>
-                </ul>
-            </div>
-        </div>
+/* ---------- Layout ---------- */
+.hero-content {
+    position: relative;
+    z-index: 3;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
 
-        <div class="accordion-item interactive-el">
-            <div class="accordion-header">
-                <h3 class="acc-title">Dir. of Auxiliary Programs</h3>
-                <span class="acc-company">St Paul Academy & Summit School</span>
-                <span class="acc-year">2016 — 2023</span>
-            </div>
-            <div class="accordion-content">
-                <ul class="bullet-list">
-                    <li>Collaborated with operations and administrative leadership to drive the launch of over 20 new programs.</li>
-                    <li><b>Supervised a team of 20+ staff</b>, providing mentorship, training, and professional development opportunities.</li>
-                    <li>Managed auxillary program budgets, tripling program enrollment and markedly expanded institutional offerings.</li>
-                    <li>Strengthened program structures to ensure high-quality, mission-aligned enrichment experiences for all students.</li>
-                </ul>
-            </div>
-        </div>
+/* ---------- Subtitle ---------- */
 
-        <div class="accordion-item interactive-el">
-            <div class="accordion-header">
-                <h3 class="acc-title">Office Manager</h3>
-                <span class="acc-company">University of St Thomas</span>
-                <span class="acc-year">2013 — 2016</span>
-            </div>
-            <div class="accordion-content">
-                <ul class="bullet-list">
-                    <li>Acted as a liaison for city staff to maintain current information on programs, policies, and procedures.</li>
-                    <li>Led the planning and execution of bi-monthly community events, increasing student participation by 75%.</li>
-                    <li>Facilitated focus groups to assess program effectiveness, directly influencing policy changes and initiatives.</li>
-                </ul>
-            </div>
-        </div>
+.hero-subtitle{
+    margin-top:2.25rem;
+    color:var(--cream);
+    text-transform:uppercase;
+    letter-spacing:.28em;
+    font-size:.95rem;
+    opacity:.95;
+}
 
-    </div>
-</section>
+/* ---------- Location ---------- */
 
-<section id="skills" class="reveal">
-    <div class="section-header">
-        <p class="label">SKILLS</p>
-        <h2>What I do best.</h2>
-    </div>
-    <div class="skills-container">
-        <!-- Left Column -->
-        <div>
-            <div class="skill-row">
-                <div class="skill-header">
-                    <span class="label">Operations Management</span>
-                </div>
-                <div class="skill-bar-bg">
-                    <div class="skill-fill" data-width="95%"></div>
-                </div>
-            </div>
-            <div class="skill-row">
-                <div class="skill-header">
-                    <span class="label">Community Building</span>
-                </div>
-                <div class="skill-bar-bg">
-                    <div class="skill-fill alt" data-width="90%"></div>
-                </div>
-            </div>
-            <div class="skill-row">
-                <div class="skill-header">
-                    <span class="label">Data Strategy</span>
-                </div>
-                <div class="skill-bar-bg">
-                    <div class="skill-fill gold" data-width="85%"></div>
-                </div>
-            </div>
-        </div>
-        
-        <!-- Right Column -->
-        <div>
-            <div class="skill-row">
-                <div class="skill-header">
-                    <span class="label">Design & Creative</span>
-                </div>
-                <div class="skill-bar-bg">
-                    <div class="skill-fill gold" data-width="80%"></div>
-                </div>
-            </div>
-            <div class="skill-row">
-                <div class="skill-header">
-                    <span class="label">Program Management</span>
-                </div>
-                <div class="skill-bar-bg">
-                    <div class="skill-fill" data-width="95%"></div>
-                </div>
-            </div>
-            <div class="skill-row">
-                <div class="skill-header">
-                    <span class="label">Public Engagement</span>
-                </div>
-                <div class="skill-bar-bg">
-                    <div class="skill-fill alt" data-width="88%"></div>
-                </div>
-            </div>
-        </div>
-    </div>
+.hero-location{
+    margin-top:.9rem;
+    color:rgba(242,221,180,.72);
+    letter-spacing:.18em;
+    text-transform:uppercase;
+    font-size:1rem;
+}
 
-    <div class="tags-section">
-        <p class="label">Technologies</p>
-        <div class="tags">
-            <span class="tag label">Microsoft Office Suite</span>
-            <span class="tag label">Google Business Suite</span>
-            <span class="tag label">Canva</span>
-            <span class="tag label">UltraCamp</span>
-            <span class="tag label">Qualtrics</span>
-            <span class="tag label">Buffer</span>
-            <span class="tag label">SalesForce</span>
-            <span class="tag label">Asana</span>
-            <span class="tag label">HubSpot</span>
-            <span class="tag label">QuickBooks</span>
-            <span class="tag label">SQL Server (SSMS)</span>
-            <span class="tag label">ArcGIS</span>
-        </div>
-    </div>
-</section>
+/* Marquee */
+.marquee-wrapper {
+    background: var(--gold); overflow: hidden; padding: 1.5rem 0;
+    border-top: 3px solid var(--espresso); border-bottom: 3px solid var(--espresso);
+}
+.marquee {
+    white-space: nowrap; animation: marquee 20s linear infinite;
+    color: var(--espresso); font-weight: 500;
+}
+@keyframes marquee {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+}
 
-<section id="education" class="reveal">
-    <div class="section-header">
-        <p class="label">EDUCATION & DEVELOPMENT</p>
-        <h2>What I Know.</h2>
-    </div>
-    <div class="education-card tilt-card interactive-el" id="tiltCard">
-        <div class="education-content tilt-content">
-            
-            <!-- Reordered for better visual hierarchy -->
-            <div class="edu-eyebrow label">
-                <div class="edu-rule"></div>
-                <span>Class of 2016</span>
-                <div class="edu-rule"></div>
-            </div>
+/* ==================================
+   6. ABOUT SECTION & STATS
+================================== */
 
-            <h2 class="edu-school">University of St. Thomas</h2>
-            
-            <h3 class="edu-degree">B.A. Psychology & Family Studies</h3>
+#about { max-width: 1200px; 
+         margin: 0 auto;
+         padding-top: 10rem;
+         padding-bottom: 0rem 
+        }
 
-            <div class="tags">
-                <span class="tag label">Cum Laude</span>
-                <span class="tag label">Dean's List</span>
-                <span class="tag label">Tommie Award Nominee</span>
-                <span class="tag label">Psi Chi</span>
-                <span class="tag label">Newsroom Intern</span>
-                <span class="tag label">Tabletop Club</span>
-            </div>
+#about .section-header {
+    margin-bottom: 1.5rem;
+}
 
-        </div>
-    </div>
+#about .section-header .label {
+    color: var(--espresso);
+}
 
-    <div class="career-timeline">
+#about h2 { 
+    font-size: clamp(1.8rem, 4vw, 2.8rem); 
+    color: var(--espresso); 
+    margin-top: 0.5rem; 
+    margin-bottom: 2rem; 
+    line-height: 1.1; 
+    max-width: 800px; 
+}
 
-        <div class="timeline-row">
-            <div class="timeline-label">
-                <h4>NODA Conference</h4>
-                 <p>Orientation & Retention</p>
-            </div>
-            <div class="timeline-bar-container">
-                <div class="timeline-bar short" style="left:0%; width:12%;"></div>
-            </div>
-            <div class="timeline-years label">2015–2016</div>
-        </div>
+.intro-text { 
+    font-size: 1.05rem; 
+    line-height: 1.6; 
+    max-width: 650px;
+}
 
-        <div class="timeline-row">
-            <div class="timeline-label">
-                <h4>Orientation & Retention Intern</h4>
-                 <p>University of St Thomas</p>
-            </div>
-            <div class="timeline-bar-container">
-                <div class="timeline-bar short" style="left:0%; width:12%;"></div>
-            </div>
-            <div class="timeline-years label">2015–2016</div>
-        </div>
+/* About Layout & Dynamic Frame */
+.about-grid-wrapper {
+    display: grid;
+    grid-template-columns: 110px 1fr;
+    gap: 1.5rem;
+    align-items: start; 
+}
 
-        <div class="timeline-row">
-            <div class="timeline-label">
-                <h4>Developmental Designs</h4>
-                <p>The Origins Program</p>
-            </div>
-            <div class="timeline-bar-container">
-                <div class="timeline-bar long" style="left:12%; width:58%;"></div>
-            </div>
-            <div class="timeline-years label">2016–2023</div>
-        </div>
+.about-image-column {
+    height: 100%;
+    padding: 0.5rem 0; 
+}
 
-        <div class="timeline-row">
-            <div class="timeline-label">
-                <h4>SPA Diversity Forum</h4>
-                <p>Courageous Conversation®</p>  
-            </div>
-            <div class="timeline-bar-container">
-                <div class="timeline-bar gold" style="left:12%; width:58%;"></div>
-            </div>
-            <div class="timeline-years label">2016–2023</div>
-        </div>
+.analog-frame {
+    height: 100%; 
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    padding: 10px; 
+    background: var(--cream);
+    border: 2px solid var(--espresso);
+    box-shadow: 6px 6px 0px var(--sienna); 
+    transform: rotate(-3deg);
+    transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.4s ease;
+    cursor: none;
+}
 
-        <div class="timeline-row">
-            <div class="timeline-label">
-                <h4>MAIS Conference</h4>
-                 <p>Minnesota Independent Schools</p>
-            </div>
-            <div class="timeline-bar-container">
-                <div class="timeline-bar short" style="left:20%; width:18%;"></div>
-            </div>
-            <div class="timeline-years label">2017–2019</div>
-        </div>
+.analog-matte {
+    flex-grow: 1; 
+    border: 2px solid var(--espresso);
+    overflow: hidden;
+    background: var(--espresso);
+    display: flex;
+}
 
-        <div class="timeline-row">
-            <div class="timeline-label">
-                <h4>ISACS Committee Chair</h4>
-                 <p>Auxiliary Programs</p>
-            </div>
-            <div class="timeline-bar-container">
-                <div class="timeline-bar short" style="left:30%; width:10%;"></div>
-            </div>
-            <div class="timeline-years label">2018–2019</div>
-        </div>
+.analog-matte img {
+    width: 100%;
+    height: 100%; 
+    display: block;
+    object-fit: cover; 
+    filter: sepia(20%) contrast(110%); 
+    transition: transform 0.6s ease, filter 0.4s ease;
+}
 
-        <div class="timeline-row">
-            <div class="timeline-label">
-                <h4>Developing Leaders Task Force</h4>
-                 <p>St Paul Academy & Summit School</p>
-            </div>
-            <div class="timeline-bar-container">
-                <div class="timeline-bar" style="left:40%; width:18%;"></div>
-            </div>
-            <div class="timeline-years label">2019–2021</div>
-        </div>
+.analog-frame:hover {
+    transform: rotate(0deg) translateY(-4px); 
+    box-shadow: 10px 10px 0px var(--gold); 
+}
 
-        <div class="timeline-row">
-            <div class="timeline-label">
-                <h4>ISACS Annual Conference</h4>
-                 <p>Regional Independent Schools</p>
-            </div>
-            <div class="timeline-bar-container">
-                <div class="timeline-bar gold" style="left:50%; width:26%;"></div>
-            </div>
-            <div class="timeline-years label">2020–2023</div>
-        </div>
+.analog-frame:hover .analog-matte img {
+    transform: scale(1.05); 
+    filter: sepia(0%) contrast(100%); 
+}
 
-        <div class="timeline-row">
-            <div class="timeline-label">
-                <h4>FEMA IS-244.B</h4>
-                 <p>Developing & Managing Volunteers</p>
-            </div>
-            <div class="timeline-bar-container">
-                <div class="timeline-bar short" style="left:72%; width:10%;"></div>
-            </div>
-            <div class="timeline-years label">2023–2024</div>
-        </div>
+/* Stats */
+.stats-grid { 
+    display: flex; 
+    gap: 4rem; 
+    margin-top: 3rem; 
+    border-top: 2px solid var(--espresso); 
+    padding-top: 2rem; 
+}
 
-        <div class="timeline-row">
-            <div class="timeline-label">
-                <h4>FEMA IS-240.C</h4>
-                 <p>Leadership and Influence</p>
-            </div>
-            <div class="timeline-bar-container">
-                <div class="timeline-bar gold short" style="left:80%; width:10%;"></div>
-            </div>
-            <div class="timeline-years label">2024–2025</div>
-        </div>
+.stat-item h3 { font-size: 4rem; color: var(--avocado); }
+.stat-item span { font-family: 'Abril Fatface', serif; font-size: 4rem; color: var(--avocado); }
 
-        <div class="timeline-row">
-            <div class="timeline-label">
-                <h4>Planning Commissioner</h4>
-                 <p>City of North St Paul</p>
-            </div>
-            <div class="timeline-bar-container">
-                <div class="timeline-bar long" style="left:88%; width:12%;"></div>
-            </div>
-            <div class="timeline-years label">2025–2026</div>
-        </div>
+/* ==================================
+   7. COMMUNITY
+================================== */
 
-    </div>
-</section>
+#community {
+    max-width: 1300px;
+    margin: 0 auto;
+    padding: 5rem 10%;
+    background: rgba(90, 122, 66, 0.1);
+    box-sizing: border-box;
+    overflow: hidden; 
+}
 
-<section id="contact" class="reveal">
-    <div class="contact-grid-wrapper">
-        
-        <div class="contact-text-column">
-            <div class="section-header">
-                <p class="label" style="color: var(--gold);">CONTACT</p>
-                <h2 class="contact-heading">Let's build something together.</h2>
-            </div>
-            <p class="contact-subtext">
-                Drop me a line to discuss operations, community building, or your next big project.
-            </p>
-        </div>
-        
-        <div class="contact-form-column">
-            <form class="contact-form" action="https://formspree.io/f/mayrpgap" method="POST">
-                <div class="row">
-                    <div class="col-6">
-                        <input type="text" name="name" placeholder="Name" class="interactive-el" required />
-                    </div>
-                    <div class="col-6">
-                        <input type="email" name="email" placeholder="Email" class="interactive-el" required />
-                    </div>
-                    <div class="col-12">
-                        <textarea name="message" placeholder="Message" rows="5" class="interactive-el" required></textarea>
-                    </div>
-                    <div class="col-12">
-                        <input type="submit" value="Send Message" class="interactive-el" />
-                    </div>
-                </div>
-            </form>
-        </div>
-        
-    </div>
-</section>
+#community .section-header h2 {
+    font-size: clamp(2.2rem, 5vw, 4.5rem);
+    line-height: 1.1;
+    margin-bottom: 2rem;
+}
 
-<footer>
-    <div class="footer-content">
-        <p>&copy; 2026 Vito Sauro.</p>
-        <div class="footer-links">
-            <a href="https://instagram.com/votevito" class="interactive-el" target="_blank" rel="noopener noreferrer">@votevito</a>
-            <span class="separator">✦</span>
-            <a href="mailto:vito.sauro@gmail.com" class="interactive-el">vito.sauro@gmail.com</a>
-        </div>
-    </div>
-</footer>
+.impact-card {
+    display: flex;
+    background: var(--cream);
+    border: 2px solid var(--espresso);
+    margin-bottom: 3rem;
+    box-shadow: 8px 8px 0 var(--retro-tan);
+    transition: transform 0.35s ease, box-shadow 0.35s ease;
+    overflow: hidden; 
+}
 
-<script type="module">
-    import { CountUp } from './countUp.min.js';
+.impact-card:last-child {
+    margin-bottom: 0;
+}
 
-    const options = { duration: 3, separator: ',' };
+.impact-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 14px 14px 0 var(--gold);
+}
+
+.impact-accent {
+    width: 16px; 
+    flex-shrink: 0;
+}
+
+.impact-accent.green { background: var(--avocado); }
+.impact-accent.orange { background: var(--sienna); }
+
+.impact-main {
+    flex: 1;
+    padding: 1.5rem;
+    display: flex;
+    flex-wrap: wrap; 
+    gap: 1.5rem;
+    align-items: stretch;
+}
+
+.impact-info {
+    flex: 1 1 55%; 
+    min-width: 300px; 
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.impact-info h3 {
+    font-size: clamp(2rem, 4vw, 2.8rem);
+    margin-bottom: 0.25rem;
+    line-height: 1.1;
+}
+
+.impact-divider {
+    height: 3px; 
+    background: var(--espresso);
+    margin: 1.5rem 0;
+    width: 100%;
+    max-width: 120px; 
+}
+
+.impact-copy {
+    line-height: 1.7;
+    font-size: 1.1rem;
+}
+
+/* THE SCORECARD METRICS */
+.impact-metrics-scorecard {
+    flex: 1 1 200px;
+    max-width: 320px;
+    background: var(--espresso); 
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    border: 2px solid var(--espresso);
+    box-shadow: 8px 8px 0px var(--sienna); 
+    position: relative;
+}
+
+.impact-metrics-scorecard::before {
+    content: '';
+    position: absolute;
+    top: -2px; 
+    right: -2px;
+    width: 20px; 
+    height: 20px;
+    background: var(--gold);
+    border-left: 2px solid var(--espresso);
+    border-bottom: 2px solid var(--espresso);
+    z-index: 2;
+}
+
+.scorecard-readout {
+    background: var(--cream);
+    border: 2px solid var(--espresso);
+    padding: 1.5rem 1rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    box-shadow: inset 4px 4px 0px rgba(44, 24, 16, 0.08); 
+    transition: transform 0.2s ease, background 0.3s ease;
+}
+
+.scorecard-readout:hover {
+    background: #fff;
+    transform: scale(1.02);
+}
+
+.scorecard-readout .metric-label {
+    font-family: 'DM Mono', monospace;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+    letter-spacing: 0.15em;
+    color: var(--sienna);
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+}
+
+.scorecard-readout .metric-number {
+    font-family: 'Abril Fatface', serif;
+    font-size: clamp(2.2rem, 5vw, 3rem);
+    color: var(--espresso);
+    line-height: 1;
+}
+
+/* ==================================
+   8. EXPERIENCE / ACCORDION
+================================== */
+
+.accordion-wrapper {
+    border-bottom: var(--border-heavy);
+    max-width: 1000px;
+    margin: 0 auto;
+    width: 100%;
+}
+
+.accordion-item {
+    border-top: var(--border-heavy);
+    position: relative;
+    overflow: hidden;
+    transition: var(--transition-smooth);
+    background: transparent;
+}
+
+.accordion-header {
+    padding: 2.5rem 2rem;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+    align-items: start;
+    text-align: left;
+    transition: var(--transition-smooth);
+    color: var(--espresso);
+}
+
+.accordion-header:hover {
+    background-color: var(--retro-tan);
+    padding-left: 2rem;
+    padding-right: 2rem;
+}
+
+.acc-year {
+    font-weight: 800;
+    font-size: 1.2rem;
+    color: var(--sienna);
+    font-family: 'DM Mono', monospace;
+}
+
+.acc-title {
+    font-size: 2.5rem;
+    font-family: 'Abril Fatface', serif;
+}
+
+.acc-company {
+    text-align: left;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.9rem;
+}
+
+.accordion-content {
+    max-height: 0;
+    opacity: 0;
+    padding: 0 2rem;
+    transition: var(--transition-smooth);
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+}
+
+.accordion-item.active .accordion-content {
+    max-height: 800px;
+    opacity: 1;
+    padding: 2rem;
+    background-color: var(--espresso);
+    color: var(--cream);
+}
+
+.accordion-item.active .accordion-header {
+    background-color: var(--espresso);
+    color: var(--gold);
+}
+
+.accordion-item.active .acc-year {
+    color: var(--gold);
+}
+
+ul.bullet-list {
+    list-style-type: none;
+    margin-left: 0;
+    font-family: sans-serif;
+    font-style: normal;
+}
+
+ul.bullet-list li {
+    position: relative;
+    padding-left: 1.5rem;
+    margin-bottom: 0.8rem;
+    font-size: 1.1rem;
+    line-height: 1.5;
+}
+
+ul.bullet-list li::before {
+    content: "✦";
+    position: absolute;
+    left: 0;
+    color: var(--sienna);
+}
+
+/* ==================================
+   9. SKILLS SECTION
+================================== */
+
+#skills { background: var(--espresso); color: var(--cream); }
+#skills h2 { color: var(--gold); font-size: 3.5rem; margin-top: 1rem; }
+.skills-container { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-top: 2rem; }
+.skill-row { margin-bottom: 1.5rem; }
+.skill-header { display: flex; justify-content: space-between; margin-bottom: 0.5rem; }
+.skill-bar-bg { height: 12px; background: rgba(255,255,255,0.1); border-radius: 6px; overflow: hidden;}
+.skill-fill { width: 0; height: 100%; background: var(--avocado); transition: 1.5s ease-out; }
+.skill-fill.alt { background: var(--sienna); }
+.skill-fill.gold { background: var(--gold); }
+
+.tags-section { margin-top: 4rem; }
+.tags { display: flex; gap: 1rem; flex-wrap: wrap; margin-top: 1rem; }
+.tag { border: 1px solid var(--cream); padding: 0.5rem 1.2rem; border-radius: 30px; }
+
+/* ==================================
+   10. EDUCATION & TIMELINE
+================================== */
+
+.education-card {
+    max-width: 800px;
+    margin: 0 auto 6rem auto;
+    padding: 4.5rem 3rem;
+    border: 3px solid var(--sienna);
+    background: var(--cream);
+    box-shadow: 16px 16px 0 var(--gold);
+    text-align: center;
+    transition: transform 0.1s; 
+    transform-style: preserve-3d;
+}
+
+.education-content {
+    transform: translateZ(60px); 
+}
+
+.edu-eyebrow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    color: var(--sienna);
+    font-size: 0.9rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    margin-bottom: 1.5rem;
+    opacity: 0.9;
+}
+
+.edu-rule {
+    height: 2px;
+    width: 40px;
+    background-color: var(--gold);
+}
+
+.edu-school {
+    font-size: clamp(1.5rem, 4vw, 3.5rem);
+    color: var(--espresso, #3A1C10); 
+    line-height: 1.1;
+    margin: 0;
+    font-weight: 700;
+}
+
+.edu-degree {
+    font-size: clamp(1.1rem, 3vw, 1.8rem);
+    color: var(--sienna);
+    font-weight: 400;
+    font-style: italic; 
+    margin: 1rem 0 3rem 0;
+}
+
+.education-card .tags { 
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center; 
+    gap: 0.75rem;
+}
+
+.education-card .tag { 
+    border: 2px solid var(--sienna); 
+    color: var(--sienna); 
+    background: rgba(200, 75, 17, 0.04); 
+    padding: 0.5rem 1rem;
+    font-size: 0.75rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+}
+
+.career-timeline {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding-top: 3rem;
+    position: relative;
+    border-top: 3px solid var(--espresso);
+}
+
+.timeline-scale {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    padding-bottom: 1rem;
+    margin-bottom: 2rem;
+    border-bottom: 3px solid var(--espresso);
+    font-family: 'DM Mono', monospace;
+    font-size: .9rem;
+}
+
+.timeline-row {
+    display: grid;
+    grid-template-columns: 280px 1fr 110px;
+    gap: 2rem;
+    align-items: center;
+    margin-bottom: 1.5rem;
+}
+
+.timeline-label { text-align: right; }
+.timeline-label h4 { font-family: 'Abril Fatface', serif; font-size: 1.2rem; color: var(--sienna); margin-bottom: .25rem; line-height: 1.1; }
+.timeline-label p { font-family: 'DM Mono', monospace; font-size: .8rem; text-transform: uppercase; letter-spacing: .08em; opacity: .75; line-height: 1.1; }
+
+.timeline-bar-container { position: relative; height: 22px; background: rgba(44,24,16,.08); border-radius: 20px; }
+.timeline-bar { position: absolute; top: 0; height: 100%; border-radius: 20px; background: var(--sienna); transition: transform .3s ease; }
+.timeline-bar.gold { background: var(--gold); }
+.timeline-bar.long { background: var(--avocado); }
+.timeline-bar:hover { transform: scaleY(1.2); }
+.timeline-years { text-align: left; }
+
+/* ==================================
+   11. CONTACT & FOOTER
+================================== */
+
+#contact { 
+    background: var(--sienna); 
+    color: var(--cream); 
+    padding: 5rem 10%; 
+}
+
+.contact-grid-wrapper {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 3rem;
+    max-width: 1100px;
+    margin: 0 auto;
+}
+
+@media (min-width: 768px) {
+    .contact-grid-wrapper {
+        grid-template-columns: 1fr 1fr; 
+        gap: 4rem;
+        align-items: center; 
+    }
+}
+
+#contact .section-header { margin-bottom: 1rem; }
+#contact h2.contact-heading { 
+    font-size: clamp(2rem, 5vw, 3.2rem); 
+    color: var(--cream); 
+    margin-top: 0.5rem;
+}
+
+.contact-subtext {
+    font-size: 1.1rem;
+    line-height: 1.6;
+    opacity: 0.9;
+}
+
+.contact-form { 
+    width: 100%; 
+    text-align: left; 
+}
+
+.contact-form .row { display: flex; flex-wrap: wrap; gap: 1rem; }
+.contact-form .col-6 { flex: 1 1 calc(50% - 0.5rem); }
+.contact-form .col-12 { flex: 1 1 100%; }
+
+.contact-form input, .contact-form textarea {
+    width: 100%; 
+    padding: 0.8rem 1rem; 
+    border: 2px solid var(--espresso);
+    background: var(--cream); 
+    color: var(--espresso);
+    font-family: 'DM Mono', monospace; 
+    font-size: 0.95rem; 
+    outline: none;
+    transition: box-shadow 0.3s ease;
+}
+
+.contact-form input:focus, .contact-form textarea:focus {
+    box-shadow: 4px 4px 0px var(--espresso); 
+}
+
+.contact-form input::placeholder, .contact-form textarea::placeholder { color: rgba(44, 24, 16, 0.6); }
+.contact-form textarea { resize: vertical; }
+
+.contact-form input[type="submit"] {
+    background: var(--gold); 
+    border: 2px solid var(--espresso);
+    font-family: 'Abril Fatface', serif; 
+    font-size: 1.25rem; 
+    padding: 0.8rem 2rem;
+    transition: all 0.2s ease;
+}
+
+.contact-form input[type="submit"]:hover { 
+    background: var(--avocado); 
+    color: var(--cream); 
+    transform: translate(-2px, -2px); 
+    box-shadow: 4px 4px 0px var(--espresso);
+}
+
+footer {
+    background: var(--espresso); 
+    color: var(--cream); 
+    padding: 1.5rem 10%; 
+    font-family: 'DM Mono', monospace; 
+    font-size: 0.85rem;
+    letter-spacing: 0.05em; 
+}
+
+.footer-content {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    align-items: center;
+}
+
+@media (min-width: 768px) {
+    .footer-content {
+        flex-direction: row; 
+        justify-content: space-between;
+    }
+}
+
+.footer-links { 
+    display: flex; 
+    flex-direction: column; /* Stacks the 3 links on mobile */
+    gap: 1rem; 
+    align-items: center; 
+}
+
+.desktop-separator { 
+    display: none; /* Hides the stars when stacked */
+}
+
+/* Ensure all footer links inherit your gold/sienna hover effect */
+footer a { color: var(--gold); text-decoration: none; transition: color 0.3s; }
+footer a:hover { color: var(--sienna); }
+
+.footer-links a { color: var(--gold); text-decoration: none; transition: color 0.3s; }
+.footer-links a:hover { color: var(--sienna); }
+.separator { color: var(--avocado); }
+
+/* ==================================
+   12. MODAL (PRIVACY POLICY)
+================================== */
+
+.modal-overlay {
+    display: none; /* Hidden by default */
+    position: fixed;
+    inset: 0;
+    background: rgba(44, 24, 16, 0.85); /* Dark espresso overlay */
+    z-index: 500; /* Sits above everything except custom cursor */
+    justify-content: center;
+    align-items: center;
+    padding: 2rem;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.modal-overlay.active {
+    display: flex;
+    opacity: 1;
+}
+
+.modal-content {
+    background: var(--cream);
+    border: 3px solid var(--espresso);
+    box-shadow: 12px 12px 0 var(--gold);
+    max-width: 800px;
+    width: 100%;
+    max-height: 85vh; /* Prevents it from being taller than the screen */
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    transform: translateY(20px);
+    transition: transform 0.3s ease;
+}
+
+.modal-overlay.active .modal-content {
+    transform: translateY(0);
+}
+
+.modal-close {
+    position: absolute;
+    top: 1rem;
+    right: 1.5rem;
+    font-size: 2.5rem;
+    font-family: 'Abril Fatface', serif;
+    color: var(--sienna);
+    cursor: pointer;
+    line-height: 1;
+    z-index: 2;
+    transition: transform 0.2s, color 0.2s;
+}
+
+.modal-close:hover {
+    color: var(--espresso);
+    transform: scale(1.1);
+}
+
+.modal-body {
+    padding: 3rem;
+    overflow-y: auto; /* Makes the inside scrollable */
+    position: relative;
+}
+
+/* Custom Scrollbar for Modal */
+.modal-body::-webkit-scrollbar {
+    width: 10px;
+}
+.modal-body::-webkit-scrollbar-track {
+    background: var(--cream);
+    border-left: 1px solid var(--espresso);
+}
+.modal-body::-webkit-scrollbar-thumb {
+    background: var(--sienna);
+    border: 1px solid var(--espresso);
+}
+
+.modal-body h2 {
+    font-size: 3rem;
+    color: var(--espresso);
+    margin-bottom: 0.5rem;
+}
+
+.modal-body h3 {
+    font-size: 1.5rem;
+    color: var(--sienna);
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+}
+
+.modal-body p {
+    font-size: 1.05rem;
+    line-height: 1.6;
+    margin-bottom: 1rem;
+}
+
+@media (max-width: 768px) {
+    .modal-overlay { padding: 1rem; }
+    .modal-body { padding: 2rem 1.5rem; }
+    .modal-body h2 { font-size: 2rem; }
+}
+
+/* ==================================
+   13. MEDIA QUERIES (DESKTOP FIRST)
+================================== */
+
+@media (min-width: 768px) {
+    .about-grid-wrapper {
+        grid-template-columns: 280px 1fr; 
+        gap: 4rem;   
+    }
+    #community .section-header h2 {
+        white-space: nowrap;
+    }
+
+    .footer-links {
+        flex-direction: row; /* Snaps the links back to a single line */
+    }
+    .desktop-separator {
+        display: inline; /* Brings the stars back on desktop */
+    }
+}
+
+@media (max-width: 1024px) {
+    section { padding: 5rem 7%; }
     
-    // About Section Counters
-    const countYears = new CountUp('count-years', 11, options);
-    const countEvents = new CountUp('count-events', 525, options);
-    const countPrograms = new CountUp('count-programs', 20, options);
-    const countBudget = new CountUp('count-budget', 10, options);
+    #contact h2, #skills h2, #education h2 { font-size: 3rem; }
+    .acc-title { font-size: 2rem; }
+    .impact-metrics-scorecard {
+        flex-direction: row;
+        max-width: 100%;
+        padding: 1rem;
+        box-shadow: 6px 6px 0px var(--sienna); 
+    }
     
-    // Community Section Counters
-    const countMembers = new CountUp('count-members', 10400, options);
-    const countEventsBoard = new CountUp('count-events-board', 525, options);
-    const countFunding = new CountUp('count-funding', 2, options);
-    const countResidents = new CountUp('count-residents', 23671, options);
+    .scorecard-readout {
+        flex: 1; 
+        padding: 1.25rem 0.5rem;
+    }
+}
 
-    // Observer for About Section
-    const statsObserver = new IntersectionObserver((entries) => {
-        entries.forEach((entry) => {
-            if (entry.isIntersecting) {
-                countYears.start();
-                countEvents.start();
-                countPrograms.start();
-                countBudget.start();
-                statsObserver.disconnect();
-            }
-        });
-    }, { threshold: 0.5 });
-    statsObserver.observe(document.querySelector('.stats-grid'));
+@media (max-width: 768px) {
+    body { border-width: 6px; }
+    section { 
+        padding: 4rem 5%; 
+        scroll-margin-top: 150px;    
+    }
+    
+    .hero-subtitle { text-align: center; padding: 0 1rem; }
+    
+    .hero-sun {
+        width: 800px;
+        height: 800px;
+        top: -450px;
+    }
 
-    // Observer for Community Section
-    const communityObserver = new IntersectionObserver((entries) => {
-        entries.forEach((entry) => {
-            if (entry.isIntersecting) {
-                countMembers.start();
-                countEventsBoard.start();
-                countFunding.start();
-                countResidents.start();
-                communityObserver.disconnect();
-            }
-        });
-    }, { threshold: 0.5 });
-    communityObserver.observe(document.querySelector('#community'));
-</script>
+    header {
+        left: 0;
+        padding: 1rem;
+        flex-direction: column;
+        align-items: center;
+        gap: 0;
+    }
 
-<script src="script.js"></script>
-</body>
-</html>
+    #mainNav, header nav, header nav a {
+        animation: none !important; 
+    }
+
+    header nav {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr); 
+        width: 100%;
+        gap: 0.5rem; 
+        margin-top: 0;
+    }
+
+    header nav a {
+        background: var(--cream);
+        color: var(--espresso);
+        border: 2px solid var(--espresso);
+        padding: 0.5rem 0.25rem;
+        text-align: center;
+        font-weight: bold;
+        box-shadow: 4px 4px 0 var(--sienna);
+        font-size: 0.75rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: transform 0.1s, box-shadow 0.1s !important;
+    }
+
+    header nav a:active {
+        transform: translate(2px, 2px);
+        box-shadow: 2px 2px 0 var(--sienna);
+    }
+
+    header nav a:not(:last-child)::after {
+        margin-left: 0.75rem;
+        color: var(--gold); 
+    }
+    
+    #about h2 { 
+        font-size: 2.5rem;
+        margin-bottom: 0; 
+    }
+    .intro-text { font-size: 1.1rem; }
+    
+    .about-grid-wrapper {
+        display: grid;
+        grid-template-columns: 1fr; 
+        gap: 1rem;
+    }
+    
+    .about-text-column {
+        display: contents; 
+    }
+
+    .about-text-column .section-header {
+        grid-row: 2; 
+        grid-column: 1;
+        margin-bottom: 0;
+    }
+
+    .about-image-column {
+        grid-row: 1; 
+        grid-column: 1;
+        width: 100%;
+        max-width: 400px; 
+        margin: 0 auto; 
+        height: auto; 
+        aspect-ratio: 1 / 1; 
+        padding: 0;
+    }
+
+    .about-text-column .intro-text {
+        grid-row: 3; 
+        grid-column: 1;
+        margin-top: 0;
+    }
+
+    .impact-card {
+        flex-direction: column; 
+    }
+
+    .impact-accent {
+        width: 100%; 
+        height: 16px; 
+    }
+
+    .impact-main {
+        width: 100%;
+        padding: 1.5rem 0 0 0;
+        display: flex;
+        flex-direction: column;
+        gap: 2rem;
+        box-sizing: border-box;
+    }
+
+    .impact-info {
+        width: 100%;
+        min-width: 0; 
+        padding: 0 1.5rem; 
+        box-sizing: border-box;
+    }
+    
+    .impact-metrics-scorecard {
+        flex-direction: row;
+        max-width: 100%;
+        margin-left: 0; 
+        padding: .5rem;
+        box-shadow: 0px 0px 0px var(--sienna);
+        border-width: 1px; 
+        border-left: none; 
+        border-right: none;
+        box-sizing: border-box;
+        margin-top: auto;
+    }
+    
+    .impact-metrics-scorecard::before {
+        display: none;
+    }
+    
+    .scorecard-readout {
+        flex: 1; 
+        padding: 1rem 0.5rem;
+        border-width: 1px; 
+    }
+
+    .stats-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 2rem; }
+    .stat-item { text-align: center; }
+    .stat-item h3, .stat-item span { font-size: clamp(2rem, 8vw, 3rem); }
+    
+    .skills-container { grid-template-columns: 1fr; }
+    
+    .acc-year, .acc-company { font-size: .85rem; }
+    .acc-title { font-size: 1.8rem; line-height: 1.1; }
+    
+    .timeline-scale { display: none; }
+    .timeline-row { grid-template-columns: 1fr; gap: .5rem; margin-bottom: 2rem; }
+    .timeline-label, .timeline-years { text-align: left; }
+    .timeline-bar-container { height: 18px; }
+    
+    .education-card { padding: 2rem; }
+    .education-card h1 { font-size: 2.5rem; }
+    .tilt-card { padding: 2rem; }
+    .tilt-content h1 { font-size: 4rem; }
+    
+    .contact-form .col-6 { flex: 1 1 100%; }
+}
+
+@media (max-width: 480px) {
+    .stats-grid { grid-template-columns: 1fr; }
+    #contact h2, #skills h2, #education h2 { font-size: 2rem; }
+    .acc-title { font-size: 1.6rem; }
+}
+
+@media (hover: hover) and (pointer: fine) {
+    * {
+        cursor: none !important;
+    }
+}
+
+@media (hover: none), (pointer: coarse) {
+    .cursor-dot, .cursor-outline {
+        display: none !important;
+    }
+}
