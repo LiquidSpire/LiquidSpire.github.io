@@ -848,13 +848,129 @@ footer {
     }
 }
 
-.footer-links { display: flex; gap: 1rem; align-items: center; }
+.footer-links { 
+    display: flex; 
+    flex-direction: column; /* Stacks the 3 links on mobile */
+    gap: 1rem; 
+    align-items: center; 
+}
+
+.desktop-separator { 
+    display: none; /* Hides the stars when stacked */
+}
+
+/* Ensure all footer links inherit your gold/sienna hover effect */
+footer a { color: var(--gold); text-decoration: none; transition: color 0.3s; }
+footer a:hover { color: var(--sienna); }
+
 .footer-links a { color: var(--gold); text-decoration: none; transition: color 0.3s; }
 .footer-links a:hover { color: var(--sienna); }
 .separator { color: var(--avocado); }
 
 /* ==================================
-   12. MEDIA QUERIES (DESKTOP FIRST)
+   12. MODAL (PRIVACY POLICY)
+================================== */
+
+.modal-overlay {
+    display: none; /* Hidden by default */
+    position: fixed;
+    inset: 0;
+    background: rgba(44, 24, 16, 0.85); /* Dark espresso overlay */
+    z-index: 500; /* Sits above everything except custom cursor */
+    justify-content: center;
+    align-items: center;
+    padding: 2rem;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.modal-overlay.active {
+    display: flex;
+    opacity: 1;
+}
+
+.modal-content {
+    background: var(--cream);
+    border: 3px solid var(--espresso);
+    box-shadow: 12px 12px 0 var(--gold);
+    max-width: 800px;
+    width: 100%;
+    max-height: 85vh; /* Prevents it from being taller than the screen */
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    transform: translateY(20px);
+    transition: transform 0.3s ease;
+}
+
+.modal-overlay.active .modal-content {
+    transform: translateY(0);
+}
+
+.modal-close {
+    position: absolute;
+    top: 1rem;
+    right: 1.5rem;
+    font-size: 2.5rem;
+    font-family: 'Abril Fatface', serif;
+    color: var(--sienna);
+    cursor: pointer;
+    line-height: 1;
+    z-index: 2;
+    transition: transform 0.2s, color 0.2s;
+}
+
+.modal-close:hover {
+    color: var(--espresso);
+    transform: scale(1.1);
+}
+
+.modal-body {
+    padding: 3rem;
+    overflow-y: auto; /* Makes the inside scrollable */
+    position: relative;
+}
+
+/* Custom Scrollbar for Modal */
+.modal-body::-webkit-scrollbar {
+    width: 10px;
+}
+.modal-body::-webkit-scrollbar-track {
+    background: var(--cream);
+    border-left: 1px solid var(--espresso);
+}
+.modal-body::-webkit-scrollbar-thumb {
+    background: var(--sienna);
+    border: 1px solid var(--espresso);
+}
+
+.modal-body h2 {
+    font-size: 3rem;
+    color: var(--espresso);
+    margin-bottom: 0.5rem;
+}
+
+.modal-body h3 {
+    font-size: 1.5rem;
+    color: var(--sienna);
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+}
+
+.modal-body p {
+    font-size: 1.05rem;
+    line-height: 1.6;
+    margin-bottom: 1rem;
+}
+
+@media (max-width: 768px) {
+    .modal-overlay { padding: 1rem; }
+    .modal-body { padding: 2rem 1.5rem; }
+    .modal-body h2 { font-size: 2rem; }
+}
+
+/* ==================================
+   13. MEDIA QUERIES (DESKTOP FIRST)
 ================================== */
 
 @media (min-width: 768px) {
@@ -864,6 +980,13 @@ footer {
     }
     #community .section-header h2 {
         white-space: nowrap;
+    }
+
+    .footer-links {
+        flex-direction: row; /* Snaps the links back to a single line */
+    }
+    .desktop-separator {
+        display: inline; /* Brings the stars back on desktop */
     }
 }
 
