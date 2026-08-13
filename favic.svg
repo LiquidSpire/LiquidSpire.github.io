@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <defs>
+    <!-- Clips the inner shapes to match the rounded background -->
+    <clipPath id="badge-clip">
+      <rect width="100" height="100" rx="22" />
+    </clipPath>
+  </defs>
+  
+  <!-- Espresso Background -->
+  <rect width="100" height="100" rx="22" fill="#2C1810" />
+  
+  <!-- Geometric V Monogram -->
+  <g clip-path="url(#badge-clip)" fill="none" stroke-width="12" stroke-linecap="square" stroke-linejoin="miter">
+    <!-- Avocado (Outer/Bottom) -->
+    <polyline points="-30,-20 50,60 130,-20" stroke="#5A7A42" transform="translate(0, 20)" />
+    
+    <!-- Sienna -->
+    <polyline points="-30,-20 50,60 130,-20" stroke="#C84B11" transform="translate(0, 5)" />
+    
+    <!-- Gold -->
+    <polyline points="-30,-20 50,60 130,-20" stroke="#E8A838" transform="translate(0, -10)" />
+    
+    <!-- Cream (Inner/Top) -->
+    <polyline points="-30,-20 50,60 130,-20" stroke="#F2DDB4" transform="translate(0, -25)" />
+  </g>
+</svg>
